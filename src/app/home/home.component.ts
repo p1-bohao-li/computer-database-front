@@ -1,26 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ComputerService } from '../service/computer.service';
-
-
-export interface PeriodicElement {
-	name: string;
-	position: number;
-	weight: number;
-	symbol: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-	{ position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-	{ position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-	{ position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-	{ position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
-	{ position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
-	{ position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
-	{ position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
-	{ position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
-	{ position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
-	{ position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
-];
+import * as $ from 'jquery';
+import 'datatables.net';
+import 'datatables.net-bs4';
 
 @Component({
 	selector: 'app-home',
@@ -29,20 +10,28 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 export class HomeComponent implements OnInit {
 
-	displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-	dataSource = ELEMENT_DATA;
-
-	// private computers;
-
-	constructor(private computerService: ComputerService) { }
-
-	ngOnInit() {
-		// this
-		// 	.computerService
-		// 	.getComputers()
-		// 	.subscribe((data: any) => {
-		// 		this.computers = data;
-		// 	})
+	title = 'Example of Angular 8 DataTable';
+	dtOptions: DataTables.Settings = {};
+	dtUsers = [
+		{ "id": 101, "firstName": "Anil", "lastName": "Singh" },
+		{ "id": 102, "firstName": "Reena", "lastName": "Singh" },
+		{ "id": 103, "firstName": "Aradhay", "lastName": "Simgh" },
+		{ "id": 104, "firstName": "Dilip", "lastName": "Singh" },
+		{ "id": 105, "firstName": "Alok", "lastName": "Singh" },
+		{ "id": 106, "firstName": "Sunil", "lastName": "Singh" },
+		{ "id": 107, "firstName": "Sushil", "lastName": "Singh" },
+		{ "id": 108, "firstName": "Sheo", "lastName": "Shan" },
+		{ "id": 109, "firstName": "Niranjan", "lastName": "R" },
+		{ "id": 110, "firstName": "Lopa", "lastName": "Mudra" },
+		{ "id": 111, "firstName": "Paramanand", "lastName": "Tripathi" }
+	];
+	ngOnInit(): void {
+		this.dtOptions = {
+			data: this.dtUsers,
+			columns: [{ title: 'User ID', data: 'id' },
+			{ title: 'First Name', data: 'firstName' },
+			{ title: 'Last Name', data: 'lastName' }]
+		};
 	}
 
 }
