@@ -29,7 +29,6 @@
     "datatables.net-bs4": "^1.10.20",
     "datatables.net-dt": "^1.10.20",
     "jquery": "^3.4.1",
-    "material-design-icons-iconfont": "^5.0.1",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"

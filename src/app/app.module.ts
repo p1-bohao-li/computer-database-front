@@ -14,9 +14,7 @@ import { AddComputerComponent } from './add-computer/add-computer.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomNgxModule } from './custom-ngx-bootstrap/custom-ngx-bootstrap.module';
 import { EditComputerComponent } from './edit-computer/edit-computer.component';
-
 import { DataTablesModule } from 'angular-datatables';
-declare var $: any;
 
 @NgModule({
 	declarations: [
@@ -36,7 +34,7 @@ declare var $: any;
 		FormsModule,
 		ReactiveFormsModule,
 		CustomNgxModule,
-		DataTablesModule
+		DataTablesModule,
 	],
 	providers: [HttpClientModule],
 	bootstrap: [AppComponent],
