@@ -1,3 +1,20 @@
-table {
-    width: 80%;
+.home {
+  margin: 10%;
+
+  .e-gridlist .e-tbar-btn.e-btn,
+  .e-gridlist .e-btn {
+    box-shadow: none;
+    text-transform: none;
   }
+
+  .e-ghidden {
+    opacity: 0.35;
+  }
+
+  .e-mastertext {
+    font-size: 15px;
+    font-family: Roboto;
+    opacity: 0.87;
+    padding: 1em;
+  }
+}

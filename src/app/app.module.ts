@@ -16,6 +16,9 @@ import { CustomNgxModule } from './custom-ngx-bootstrap/custom-ngx-bootstrap.mod
 import { EditComputerComponent } from './edit-computer/edit-computer.component';
 import { DataTablesModule } from 'angular-datatables';
 
+import { GridModule, EditService, ToolbarService, SortService } from '@syncfusion/ej2-angular-grids';
+import { ToolbarModule } from '@syncfusion/ej2-angular-navigations';
+
 @NgModule({
 	declarations: [
 		AppComponent,
@@ -35,8 +38,10 @@ import { DataTablesModule } from 'angular-datatables';
 		ReactiveFormsModule,
 		CustomNgxModule,
 		DataTablesModule,
+		GridModule,
+		ToolbarModule
 	],
-	providers: [HttpClientModule],
+	providers: [HttpClientModule, GridModule, ToolbarService, EditService, ToolbarService, SortService],
 	bootstrap: [AppComponent],
 	entryComponents: [AddComputerComponent, EditComputerComponent]
 })

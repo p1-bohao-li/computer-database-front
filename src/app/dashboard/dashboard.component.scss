@@ -50,49 +50,40 @@
         }
     }
 
-    table {
-
-        margin: 10px 100px 50px 100px;
-
-        .mat-cell,
-        .mat-header-cell {
-            border-left: 1px solid;
-            border-color: #E0E0E0;
-            padding-left: 10px;
-        }
-
-
-        .mat-cell {
-            a {
-                color: #3366BB;
-                cursor: pointer;
-            }
-
-        }
-
-        .mat-header-cell {
-            font-size: 1.2rem;
-            height: 20px;
-            background-color: #3fb0ac;
-            color: white;
-        }
-
-        .mat-column-name {
-            width: 15%;
-        }
+    .data-table {
+        margin: 100px;
     }
 
+    // table {
 
-    // .footer {
-    //     display: flex;
-    //     justify-content: center;
-    //     // position: fixed;
-    //     // left: 0;
-    //     // bottom: 0;
-    //     // width: 100%;
-    //     // color: black;
-    //     // text-align: center;
-    //     // background: #d5f4e6;
+    //     margin: 10px 100px 50px 100px;
+
+    //     .mat-cell,
+    //     .mat-header-cell {
+    //         border-left: 1px solid;
+    //         border-color: #E0E0E0;
+    //         padding-left: 10px;
+    //     }
+
+
+    //     .mat-cell {
+    //         a {
+    //             color: #3366BB;
+    //             cursor: pointer;
+    //         }
+
+    //     }
+
+    //     .mat-header-cell {
+    //         font-size: 1.2rem;
+    //         height: 20px;
+    //         background-color: #3fb0ac;
+    //         color: white;
+    //     }
+
+    //     .mat-column-name {
+    //         width: 15%;
+    //     }
     // }
 
     .navbar {

@@ -1,15 +1,12 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material';
-import { MatIconRegistry } from '@angular/material/icon';
-import { DomSanitizer } from '@angular/platform-browser';
 import { ComputerService } from 'app/service/computer.service';
 import { AddComputerComponent } from 'app/add-computer/add-computer.component';
 import { Router } from '@angular/router';
 
-import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { EditComputerComponent } from 'app/edit-computer/edit-computer.component';
 import { Computer } from 'app/model/computer.model';
-
+import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,21 +15,18 @@ import { Computer } from 'app/model/computer.model';
 })
 export class DashboardComponent implements OnInit {
 
-  // displayedColumnsDeleteMode: string[] = ['delete', 'name', 'introduced', 'discontinued', 'company'];
-  // displayedColumnsNormal: string[] = ['name', 'introduced', 'discontinued', 'company']
-
-  displayedColumns: string[] = ['name', 'introduced', 'discontinued', 'company']
-
-  numbers: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  dataSource: any;
   searchText: any;
   checked = false;
   deleteModeOn = false;
 
+
+  // dtOptions: DataTables.Settings = {};
+  dtOptions: any = {};
+  computers: Observable<Computer[]>;
+  dtTrigger: Subject<any> = new Subject<any>();
+
   constructor(
     private dialog: MatDialog,
-    private iconRegistry: MatIconRegistry,
-    private sanitizer: DomSanitizer,
     private computerService: ComputerService,
     private router: Router) {
 
@@ -44,17 +38,70 @@ export class DashboardComponent implements OnInit {
 
   }
 
-  ngOnInit() {
-    this.computerService.getComputers().subscribe(
-      data => this.dataSource = data,
-      err => console.log('err: ', err),
-      () => console.log('Completed'),
-    )
-  }
 
-  // getDisplayedColumns() {
-  //   return this.deleteModeOn ? this.displayedColumnsDeleteMode : this.displayedColumnsNormal;
-  // }
+  test: any = [
+    {
+      id: 1,
+      name: "cousin",
+      introduced: "cousin",
+      discontinued: "cousin"
+    },
+    {
+      id: 1,
+      name: "cousin",
+      introduced: "cousin",
+      discontinued: "cousin"
+    },
+    {
+      id: 1,
+      name: "cousin",
+      introduced: "cousin",
+      discontinued: "cousin"
+    },
+    {
+      id: 1,
+      name: "cousin",
+      introduced: "cousin",
+      discontinued: "cousin"
+    },
+  ]
+
+  ngOnInit() {
+
+    this.computerService.getComputers().subscribe(
+      (data) => {
+        this.computers = data;
+        this.dtTrigger.next();
+      });
+
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      order: [],
+      data: this.test,
+      columns: [{
+        title: 'ID',
+        data: 'id'
+      }, {
+        title: 'Name',
+        data: 'name'
+      }, {
+        title: 'Introduced',
+        data: 'introduced'
+      }, {
+        title: 'Discontinued',
+        data: 'discontinued'
+      }
+      ],
+      columnDefs: [
+        { targets: 0, visible: false }
+      ],
+      buttons: [
+        'columnsToggle'
+      ]
+    };
+
+  }
 
   addComputer() {
     const dialogConfig = new MatDialogConfig();
@@ -75,13 +122,18 @@ export class DashboardComponent implements OnInit {
   }
 
   toggleDeleteMode() {
-    this.deleteModeOn = !this.deleteModeOn;
+    // console.log("Toggle delete mode called");
+    // this.deleteModeOn = !this.deleteModeOn;
+    // let table = $("#example").DataTable();
+    // table.column(0).visible(true)
+
+    // console.log("visible?: ", table.column(0));
   }
 
   search() {
 
     this.computerService.getComputersByName(this.searchText).subscribe(
-      (data) => this.dataSource = data,
+      (data) => this.computers = data,
       (err) => console.log("Getting computers by name failure!"),
       () => console.log("Getting computers by name completed.")
     );
