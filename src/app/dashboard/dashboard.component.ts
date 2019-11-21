@@ -78,7 +78,7 @@ export class DashboardComponent implements OnInit {
       pagingType: 'full_numbers',
       pageLength: 10,
       order: [],
-      data: this.test,
+      data: this.computers,
       columns: [{
         title: 'ID',
         data: 'id'
@@ -108,6 +108,9 @@ export class DashboardComponent implements OnInit {
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+
+    }
 
     const dialogRef = this.dialog.open(AddComputerComponent, dialogConfig);
 
