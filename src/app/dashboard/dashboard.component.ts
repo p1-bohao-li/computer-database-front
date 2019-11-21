@@ -1,34 +1,42 @@
-import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material';
-import { ComputerService } from 'app/service/computer.service';
-import { AddComputerComponent } from 'app/add-computer/add-computer.component';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-
-import { EditComputerComponent } from 'app/edit-computer/edit-computer.component';
-import { Computer } from 'app/model/computer.model';
-import { Observable, Subject } from 'rxjs';
+import { EditService, PageService, ToolbarService, GridComponent, IEditCell } from '@syncfusion/ej2-angular-grids';
+import { ComputerService } from 'app/service/computer.service';
+import { checkComputer } from 'app/validator/computer-validator';
+import { CompanyService } from 'app/service/company.service';
+import { DropDownList } from '@syncfusion/ej2-dropdowns';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
+  providers: [ToolbarService, EditService, PageService]
 })
 export class DashboardComponent implements OnInit {
 
-  searchText: any;
-  checked = false;
-  deleteModeOn = false;
 
+  public data: Object[];
+  public editSettings: Object;
+  public toolbar: string[];
+  public orderidrules: Object;
+  public customeridrules: Object;
+  public freightrules: Object;
+  public pageSettings: Object;
+  public editparams: Object;
+  public dateFormat: Object;
 
-  // dtOptions: DataTables.Settings = {};
-  dtOptions: any = {};
-  computers: Observable<Computer[]>;
-  dtTrigger: Subject<any> = new Subject<any>();
+  // Attributes for the company dropdown list
+  public companyParams: IEditCell;
+  public companyElem: HTMLElement;
+  public companyObj: DropDownList;
+
+  @ViewChild("myGrid", { static: false })
+  public grid: GridComponent;
 
   constructor(
-    private dialog: MatDialog,
     private computerService: ComputerService,
-    private router: Router) {
+    private router: Router,
+    private companyService: CompanyService) {
 
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
 
@@ -38,131 +46,186 @@ export class DashboardComponent implements OnInit {
 
   }
 
+  ngOnInit(): void {
 
-  test: any = [
-    {
-      id: 1,
-      name: "cousin",
-      introduced: "cousin",
-      discontinued: "cousin"
-    },
-    {
-      id: 1,
-      name: "cousin",
-      introduced: "cousin",
-      discontinued: "cousin"
-    },
-    {
-      id: 1,
-      name: "cousin",
-      introduced: "cousin",
-      discontinued: "cousin"
-    },
-    {
-      id: 1,
-      name: "cousin",
-      introduced: "cousin",
-      discontinued: "cousin"
-    },
-  ]
+    this.dateFormat = { type: 'date', format: 'yyyy-MM-dd' }
 
-  ngOnInit() {
+    this.companyService.getCompanies().subscribe(
+      data => {
+        data = data.sort();
+        this.companyParams = {
+          create: () => {
+            this.companyElem = document.createElement("input");
+            return this.companyElem;
+          },
+          read: () => {
+            return this.companyObj.text;
+            // if (this.companyObj.value) {
+            //   return { id: this.companyObj.value, name: this.companyObj.text }
+            // } else {
+            //   return null;
+            // };
+          },
+          destroy: () => {
+            this.companyObj.destroy();
+          },
+          write: () => {
+            this.companyObj = new DropDownList({
+              dataSource: data,
+              fields: { value: "id", text: "name" },
+              enabled: true,
+              placeholder: "Select a compnay...",
+              floatLabelType: "Never",
+              sortOrder: "Ascending"
+            });
+            this.companyObj.appendTo(this.companyElem);
+          }
+        }
+      },
+      err => console.log("Error getting compaies: ", err),
+      () => { }
+    );
 
     this.computerService.getComputers().subscribe(
       (data) => {
-        this.computers = data;
-        this.dtTrigger.next();
-      });
 
-    this.dtOptions = {
-      pagingType: 'full_numbers',
-      pageLength: 10,
-      order: [],
-      data: this.computers,
-      columns: [{
-        title: 'ID',
-        data: 'id'
-      }, {
-        title: 'Name',
-        data: 'name'
-      }, {
-        title: 'Introduced',
-        data: 'introduced'
-      }, {
-        title: 'Discontinued',
-        data: 'discontinued'
-      }
-      ],
-      columnDefs: [
-        { targets: 0, visible: false }
-      ],
-      buttons: [
-        'columnsToggle'
-      ]
-    };
+        this.data = data;
+        this.data.forEach(computer => {
+          this.arrangeComputer(computer);
+        })
+        // this.data = data;
+      },
+      (err) => { },
+      () => { }
+    );
+
+    this.editSettings = { allowEditing: true, allowAdding: true, allowDeleting: true, mode: 'Dialog' };
+    // this.toolbar = ['Add', 'Edit', 'Delete', 'Search'];
+    this.toolbar = ['Add', 'Edit', 'Delete', 'Search'];
+    // this.orderidrules = { required: true, number: true };
+    this.orderidrules = { required: true, number: true };
+    this.customeridrules = { required: true };
+    this.freightrules = { required: true };
+    this.editparams = { params: { popupHeight: '300px' } };
+    this.pageSettings = { pageCount: 5 };
 
   }
 
-  addComputer() {
-    const dialogConfig = new MatDialogConfig();
+  arrangeComputer(computer: any) {
+    this.convertTimestamp(computer, "introduced");
+    this.convertTimestamp(computer, "discontinued");
 
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.data = {
+    const companyModel: any = computer["companyModel"];
 
+    if (companyModel) {
+      computer["company"] = companyModel.name
+    }
+  }
+
+  convertTimestamp(object: any, attribute: string): void {
+    const timestamp = object[attribute];
+    if (timestamp) {
+      // const date = new Date(timestamp)
+      // object[attribute] = date.toISOString().slice(0, 10);
+
+
+      object[attribute] = new Date(timestamp)
+      // object[attribute] = new Date(836505e6)
+    }
+  }
+
+
+  null_obj = {
+    id: undefined,
+    name: undefined,
+    introduced: undefined,
+    discontinued: undefined,
+    company: undefined
+  }
+
+  actionBegin(event) {
+
+    // console.log("Action completed: ", event);
+    // console.log("Complete data length: ", this.grid.dataSource["length"]);
+    // console.log("                ");
+
+    const action = event.action;
+    const requestType = event.requestType;
+    const computer = event.data;
+
+    switch (requestType) {
+      case "save":
+        if (action === "add") {
+          this.addComputer(computer, event);
+        }
+        if (action === "edit") {
+          this.editComputer(computer, event);
+        }
+        break;
+      case "delete":
+        this.deleteComputer(computer[0]["id"], event);
+        break;
+      case "add":
+        // Clear all the champs
+        event.data = this.null_obj;
+        break;
     }
 
-    const dialogRef = this.dialog.open(AddComputerComponent, dialogConfig);
 
-    dialogRef.afterClosed()
-      .subscribe(result => {
-        if (result) {
-          alert('You get it.')
-        } else {
-          alert('Failure')
-        }
-      }, () => { }, () => { this.router.navigateByUrl("/dashboard") });
+    // event.rowData = this.null_obj;
+    // console.log(`action: ${event.action}, requestType: ${event.requestType}, type: ${event.type}`);
+    // console.log(event);
   }
 
-  toggleDeleteMode() {
-    // console.log("Toggle delete mode called");
-    // this.deleteModeOn = !this.deleteModeOn;
-    // let table = $("#example").DataTable();
-    // table.column(0).visible(true)
+  addComputer(computer, event) {
+    if (!checkComputer(computer)) {
+      event.cancel = true;
+      return;
+    }
 
-    // console.log("visible?: ", table.column(0));
+    console.log("The computer to be added: ", computer);
+    console.log("The add event: ", event);
+
+    // this.computerService.createComputer(computer).subscribe(
+    //   () => console.log("Add computer success!"),
+    //   err => console.log("Add computer failure:", err),
+    //   () => this.refresh()
+    // );
   }
 
-  search() {
+  editComputer(computer, event) {
+    if (!checkComputer(computer)) {
+      event.cancel = true;
+      return;
+    }
 
-    this.computerService.getComputersByName(this.searchText).subscribe(
-      (data) => this.computers = data,
-      (err) => console.log("Getting computers by name failure!"),
-      () => console.log("Getting computers by name completed.")
+    console.log("The computer to be edited: ", computer);
+    // this.computerService.updateComputer(computer).subscribe(
+    //   () => console.log("Update computer success!"),
+    //   err => console.log("Update computer failure:", err),
+    //   () => this.refresh()
+    // );
+  }
+
+  deleteComputer(id, event) {
+    this.computerService.deleteComputer(id).subscribe(
+      () => console.log("Delete computer success!"),
+      err => console.log("Delete computer failure:", err),
+      () => this.refresh()
     );
   }
 
-  editComputer(computer: Computer) {
+  refresh() {
+    this.router.navigateByUrl("dashboard");
+  }
 
-    console.log("The computer passed is", computer);
+  deleteCompany() {
 
-    const dialogConfig = new MatDialogConfig();
+  }
 
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-
-    dialogConfig.data = { computer }
-
-    const dialogRef = this.dialog.open(EditComputerComponent, dialogConfig);
-
-    dialogRef.afterClosed()
-      .subscribe(result => {
-        if (result) {
-          alert('You get it.')
-        } else {
-          alert('Edit computer failure.')
-        }
-      }, () => { }, () => { this.router.navigateByUrl("/dashboard") });
-
+  actionComplete(event) {
+    // console.log("Action Begin: ", event);
+    // console.log("Begin data length: ", this.grid.dataSource["length"]);
+    // console.log("                ");
   }
 }

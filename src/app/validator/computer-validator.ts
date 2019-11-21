@@ -36,7 +36,7 @@ function check_date(introducedStr: string, discontinuedStr: string): boolean {
 function validate(name: string, introduced: string, discontinued: string): boolean {
     // Name cannot be empyt string
     if (!name) {
-        alert("Name cannot be filled with empty characters!")
+        alert("Name cannot be empty!")
         return false
     }
 

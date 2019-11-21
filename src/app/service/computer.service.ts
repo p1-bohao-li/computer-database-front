@@ -25,18 +25,22 @@ export class ComputerService {
 
 
 	getComputers(): Observable<any> {
-		return this.http.get(`${backend_url}/computer/get-all`, { headers: this.headers })
+		return this.http.get(`${backend_url}/computers/get-all`, { headers: this.headers })
 	}
 
 	createComputer(computer: any): Observable<any> {
-		return this.http.post(`${backend_url}/computer/create`, computer, { headers: this.headers });
+		return this.http.post(`${backend_url}/computers/create`, computer, { headers: this.headers });
 	}
 
 	getComputersByName(name: string): Observable<any> {
-		return this.http.get(`${backend_url}/computer/find-by-name/${name}`, { headers: this.headers })
+		return this.http.get(`${backend_url}/computers/find-by-name/${name}`, { headers: this.headers })
 	}
 
 	updateComputer(computer: any): Observable<any> {
-		return this.http.post(`${backend_url}/computer/update`, computer, { headers: this.headers });
+		return this.http.post(`${backend_url}/computers/update`, computer, { headers: this.headers });
+	}
+
+	deleteComputer(id: number): Observable<any> {
+		return this.http.delete(`${backend_url}/computers/delete/${id}`, { headers: this.headers });
 	}
 }

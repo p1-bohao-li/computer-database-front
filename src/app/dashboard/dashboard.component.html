@@ -11,21 +11,19 @@
 
 
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
+                <!-- <li class="nav-item active">
                     <button type="button" class="btn btn-light" (click)="addComputer()">Add ✚</button>
-                    <!-- <a class="nav-link" href="#">Add <span class="sr-only">(current)</span></a> -->
                 </li>
                 &nbsp;&nbsp;&nbsp;
                 <li class="nav-item active">
                     <button type="button" class="btn btn-light" (click)="toggleDeleteMode()">Delete ✘</button>
-                    <!-- <a class="nav-link" href="#">Delete</a> -->
-                </li>
+                </li> -->
             </ul>
 
             <span class="navbar-text">
                 <form class="form-inline">
                     <!-- <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"> -->
-                    <button class="btn btn-outline-light" type="submit">Delete company
+                    <button class="btn btn-outline-light" type="submit" (click)="deleteCompany()">Delete company
                         ✘</button>
                 </form>
             </span>
@@ -35,27 +33,31 @@
 
 
     <div class="data-table">
-
-        <table #dataTable datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
-            <!-- <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Introduced</th>
-                    <th>Discontinued</th>
-                    <th>Company</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let computer of computers">
-                    <td>{{ computer.id }}</td>
-                    <td>{{ computer.name }}</td>
-                    <td>{{ computer.introduced | date: 'dd/MM/yyyy'}}</td>
-                    <td>{{ computer.discontinued | date: 'dd/MM/yyyy'}}</td>
-                    <td>{{ computer.companyModel?.name }}</td>
-                </tr>
-            </tbody> -->
-        </table>
+        <div class="control-section">
+            <ejs-grid #myGrid [dataSource]="data" allowPaging="true" allowSorting="true" [pageSettings]="pageSettings"
+                [editSettings]="editSettings" [toolbar]="toolbar" (actionComplete)="actionComplete($event)"
+                (actionBegin)="actionBegin($event)">
+                <e-columns>
+                    <!-- <e-column field="id" headerText="Computer ID" width="120" textAlign="Right" isPrimaryKey="true">
+                    </e-column> -->
+                    <e-column field="name" headerText="Computer Name" width="120"></e-column>
+                    <e-column field="introduced" headerText="Introduced date" editType="datepickeredit"
+                        [format]="dateFormat" width="120">
+                    </e-column>
+                    <e-column field="discontinued" headerText="Discontinued date" editType="datepickeredit"
+                        [format]="dateFormat" width="120">
+                    </e-column>
+                    <e-column field="company" headerText="Company" editType="dropdownedit" [edit]="companyParams"
+                        width="120"></e-column>
+                    <!-- <e-column field="Freight" headerText="Freight" width="120" format="C2" textAlign="Right"
+                        editType="numericedit"></e-column>
+                    <e-column field="OrderDate" headerText="Order Date" width="130" editType="datepickeredit"
+                        format="yMd" textAlign="Right"></e-column>
+                    <e-column field="ShipCountry" headerText="Ship Country" width="150" editType="dropdownedit"
+                        [edit]="editparams"></e-column> -->
+                </e-columns>
+            </ejs-grid>
+        </div>
 
     </div>
 

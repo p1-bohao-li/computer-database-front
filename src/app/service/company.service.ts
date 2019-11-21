@@ -22,6 +22,6 @@ export class CompanyService {
   }
 
   getCompanies(): Observable<any> {
-    return this.http.get(`${backend_url}/company/get-all`, { headers: this.headers })
+    return this.http.get(`${backend_url}/companies/get-all`, { headers: this.headers })
   }
 }
