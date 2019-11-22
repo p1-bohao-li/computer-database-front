@@ -19,6 +19,8 @@ import { DataTablesModule } from 'angular-datatables';
 import { GridModule, EditService, ToolbarService, SortService, PageService } from '@syncfusion/ej2-angular-grids';
 import { ToolbarModule } from '@syncfusion/ej2-angular-navigations';
 
+import { DatePickerAllModule } from '@syncfusion/ej2-angular-calendars';
+
 @NgModule({
 	declarations: [
 		AppComponent,
@@ -39,7 +41,8 @@ import { ToolbarModule } from '@syncfusion/ej2-angular-navigations';
 		CustomNgxModule,
 		DataTablesModule,
 		GridModule,
-		ToolbarModule
+		ToolbarModule,
+		DatePickerAllModule
 	],
 	providers: [HttpClientModule, GridModule, ToolbarService, EditService, ToolbarService, SortService, PageService],
 	bootstrap: [AppComponent],

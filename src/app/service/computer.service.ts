@@ -25,7 +25,7 @@ export class ComputerService {
 
 
 	getComputers(): Observable<any> {
-		return this.http.get(`${backend_url}/computers/get-all`, { headers: this.headers })
+		return this.http.get(`${backend_url}/computers/get-all`, { headers: this.headers });
 	}
 
 	createComputer(computer: any): Observable<any> {
@@ -42,5 +42,9 @@ export class ComputerService {
 
 	deleteComputer(id: number): Observable<any> {
 		return this.http.delete(`${backend_url}/computers/delete/${id}`, { headers: this.headers });
+	}
+
+	deleteComputers(ids: number[]): Observable<any> {
+		return this.http.post(`${backend_url}/computers/delete-all`, ids, { headers: this.headers });
 	}
 }

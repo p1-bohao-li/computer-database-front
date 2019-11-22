@@ -22,6 +22,7 @@
     "@angular/platform-browser-dynamic": "~8.2.9",
     "@angular/router": "~8.2.9",
     "@ng-bootstrap/ng-bootstrap": "^5.1.2",
+    "@syncfusion/ej2-angular-calendars": "^17.3.28",
     "@syncfusion/ej2-angular-grids": "^17.3.27",
     "@syncfusion/ej2-angular-navigations": "^17.3.27",
     "angular-datatables": "^8.0.0",
