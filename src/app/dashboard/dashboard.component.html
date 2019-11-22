@@ -35,25 +35,25 @@
                 [toolbar]="toolbar" (actionBegin)="actionBegin($event)"> -->
                 <e-columns>
 
-                    <e-column type="checkbox" allowEditing="false" width="50"></e-column>
+                    <e-column type="checkbox" width="50"></e-column>
 
-                    <!-- <e-column field="id" headerText="Computer ID" width="120" textAlign="Right" isPrimaryKey="true"
+                    <e-column field="id" headerText="ID" width="120" isPrimaryKey="true"
                         [validationRules]="customeridrules">
-                    </e-column> -->
-
-                    <e-column field="name" headerText="Computer Name" allowEditing="false" width="120"></e-column>
-
-                    <e-column field="introduced" headerText="Introduced date" editType="datepickeredit"
-                        [format]="dateFormat" width="120">
                     </e-column>
 
-                    <e-column field="discontinued" headerText="Discontinued date" editType="datepickeredit"
+                    <e-column field="name" headerText="Name" allowEditing="false" width="120"></e-column>
+
+                    <e-column field="introduced" headerText="Introduced" editType="datepickeredit" [format]="dateFormat"
+                        width="120">
+                    </e-column>
+
+                    <e-column field="discontinued" headerText="Discontinued" editType="datepickeredit"
                         [format]="dateFormat" width="120">
                     </e-column>
 
                     <e-column field="companyName" headerText="Company" editType="dropdownedit" width="120"></e-column>
 
-                    <e-column headerText="Manage Records" width="80" [commands]="commands"></e-column>
+                    <e-column headerText="Manage Records" width="140" [commands]="commands"></e-column>
                 </e-columns>
             </ejs-grid>
         </div>

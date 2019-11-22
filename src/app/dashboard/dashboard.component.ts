@@ -71,6 +71,8 @@ export class DashboardComponent implements OnInit {
     { type: 'Cancel', buttonOption: { iconCss: 'e-icons e-cancel-icon', cssClass: 'e-flat' } }];
 
 
+
+
     this.dateFormat = { type: 'date', format: 'yyyy-MM-dd' }
 
     this.companyService.getCompanies().subscribe(
@@ -153,6 +155,8 @@ export class DashboardComponent implements OnInit {
 
   actionBegin(event) {
 
+
+
     const action = event.action;
     const requestType = event.requestType;
     const computer = event.data;
@@ -162,12 +166,29 @@ export class DashboardComponent implements OnInit {
     console.log("Event details: ", event);
     console.log("                ");
 
+
     switch (requestType) {
       case "save":
+        this.enableId();
+        this.resetSettings();
+        break;
+      case "add":
+        this.hideId();
+        this.hideCheckBox();
+        break;
+      case "beginEdit":
+        this.enableId();
+        this.hideCheckBox();
+        break;
+    }
+
+    switch (requestType) {
+      case "save":
+
         if (action === "add") {
           this.addComputer(computer, event);
-        }
-        if (action === "edit") {
+        } else if (action === "edit") {
+          console.log("This is really called");
           this.editComputer(computer, event);
         }
         break;
@@ -177,8 +198,6 @@ export class DashboardComponent implements OnInit {
         this.deleteComputers(ids, event);
         break;
       case "add":
-        // Clear all the champs
-        event.data = this.null_obj;
         break;
     }
 
@@ -247,7 +266,7 @@ export class DashboardComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(companyForm => {
-      console.log("Delete company dialog closed");
+      console.log("Delete company dialog closed", companyForm);
       this.deleteCompany(companyForm["company"])
     });
   }
@@ -270,9 +289,51 @@ export class DashboardComponent implements OnInit {
     // const requestType = event.requestType;
     // const computer = event.data;
 
-    console.log("Action Complete");
-    console.log(`action: ${event.action}, requestType: ${event.requestType}, type: ${event.type}`);
-    console.log("Event details: ", event);
-    console.log("                ");
+    // console.log("Action Complete");
+    // console.log(`action: ${event.action}, requestType: ${event.requestType}, type: ${event.type}`);
+    // console.log("Event details: ", event);
+    // console.log("                ");
+
+  }
+
+  resetSettings() {
+    for (var i = 0; i < this.grid.columns.length; i++) {
+      if (this.grid.columns[i]["type"] == "checkbox") {
+        this.grid.columns[i]["visible"] = true;
+      }
+      if (this.grid.columns[i]["field"] == "id") {
+        this.grid.columns[i]["visible"] = true;
+        this.grid.columns[i]["isPrimaryKey"] = true;
+        this.grid.columns[i]["allowEditing"] = true;
+      }
+    }
+  }
+
+  hideCheckBox() {
+    for (var i = 0; i < this.grid.columns.length; i++) {
+      if (this.grid.columns[i]["type"] == "checkbox") {
+        this.grid.columns[i]["visible"] = false;
+      }
+    }
+  }
+
+  hideId() {
+    for (var i = 0; i < this.grid.columns.length; i++) {
+      if (this.grid.columns[i]["field"] == "id") {
+        this.grid.columns[i]["visible"] = false;
+        this.grid.columns[i]["isPrimaryKey"] = false;
+        this.grid.columns[i]["allowEditing"] = false;
+      }
+    }
+  }
+
+  enableId() {
+    for (var i = 0; i < this.grid.columns.length; i++) {
+      if (this.grid.columns[i]["field"] == "id") {
+        this.grid.columns[i]["visible"] = true;
+        this.grid.columns[i]["isPrimaryKey"] = true;
+        this.grid.columns[i]["allowEditing"] = false;
+      }
+    }
   }
 }
