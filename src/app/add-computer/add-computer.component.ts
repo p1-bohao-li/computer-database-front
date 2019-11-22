@@ -1,6 +1,6 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, OnInit, EventEmitter, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { CompanyService } from '../service/company.service';
 import { Company } from 'app/model/company.model';
 import { ComputerService } from 'app/service/computer.service';
@@ -23,6 +23,7 @@ export class AddComputerComponent implements OnInit {
     private dialogRef: MatDialogRef<AddComputerComponent>,
     private companyService: CompanyService,
     private computerService: ComputerService,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.companyService.getCompanies().subscribe(
       data => this.companies = data,

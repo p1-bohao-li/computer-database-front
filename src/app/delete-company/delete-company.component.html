@@ -1,0 +1,25 @@
+<div class="delete-computer">
+    <h2 mat-dialog-title>Delete a company</h2>
+
+    <mat-dialog-content [formGroup]="form">
+
+
+        <div class="example-container">
+            <mat-form-field>
+                <mat-select formControlName="company" placeholder="Choose a company">
+                    <mat-option *ngFor="let company of companies" [value]="company.id">
+                        {{ company.id | number:'2.0-0' }} &nbsp;&nbsp;&nbsp;&nbsp; {{company.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+
+        </div>
+
+    </mat-dialog-content>
+
+    <mat-dialog-actions>
+        <button class="mat-raised-button" (click)="close()">Close</button>
+        <button class="mat-raised-button save-button" (click)="save()">Confirm</button>
+    </mat-dialog-actions>
+</div>

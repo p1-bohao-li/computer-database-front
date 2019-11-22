@@ -20,6 +20,7 @@ import { GridModule, EditService, ToolbarService, SortService, PageService } fro
 import { ToolbarModule } from '@syncfusion/ej2-angular-navigations';
 
 import { DatePickerAllModule } from '@syncfusion/ej2-angular-calendars';
+import { DeleteCompanyComponent } from './delete-company/delete-company.component';
 
 @NgModule({
 	declarations: [
@@ -28,6 +29,7 @@ import { DatePickerAllModule } from '@syncfusion/ej2-angular-calendars';
 		DashboardComponent,
 		AddComputerComponent,
 		EditComputerComponent,
+		DeleteCompanyComponent,
 	],
 	imports: [
 		BrowserModule,
@@ -46,6 +48,6 @@ import { DatePickerAllModule } from '@syncfusion/ej2-angular-calendars';
 	],
 	providers: [HttpClientModule, GridModule, ToolbarService, EditService, ToolbarService, SortService, PageService],
 	bootstrap: [AppComponent],
-	entryComponents: [AddComputerComponent, EditComputerComponent]
+	entryComponents: [AddComputerComponent, EditComputerComponent, DeleteCompanyComponent]
 })
 export class AppModule { }

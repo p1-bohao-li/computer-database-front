@@ -24,4 +24,8 @@ export class CompanyService {
   getCompanies(): Observable<any> {
     return this.http.get(`${backend_url}/companies/get-all`, { headers: this.headers })
   }
+
+  deleteCompany(id): Observable<any> {
+    return this.http.delete(`${backend_url}/companies/delete/${id}`, { headers: this.headers })
+  }
 }

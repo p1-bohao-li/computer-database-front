@@ -1,0 +1,22 @@
+.delete-computer {
+
+
+    .example-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .example-container>* {
+        width: 100%;
+    }
+
+    .mat-dialog-actions {
+        display: flex;
+        justify-content: space-between;
+
+        .save-button {
+            background: #3fb0ac;
+            color: white;
+        }
+    }
+}

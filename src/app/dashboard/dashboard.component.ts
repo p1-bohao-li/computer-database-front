@@ -6,6 +6,8 @@ import { checkComputer } from 'app/validator/computer-validator';
 import { CompanyService } from 'app/service/company.service';
 import { DropDownList } from '@syncfusion/ej2-dropdowns';
 import { Query } from '@syncfusion/ej2-data';
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteCompanyComponent } from 'app/delete-company/delete-company.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -40,7 +42,8 @@ export class DashboardComponent implements OnInit {
   constructor(
     private computerService: ComputerService,
     private router: Router,
-    private companyService: CompanyService) {
+    private companyService: CompanyService,
+    public dialog: MatDialog) {
 
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
 
@@ -237,8 +240,29 @@ export class DashboardComponent implements OnInit {
     this.router.navigateByUrl("dashboard");
   }
 
-  deleteCompany(id, event) {
+  openDeleteCompanyDialog(): void {
+    const dialogRef = this.dialog.open(DeleteCompanyComponent, {
+      width: '250px',
+      data: { companies: this.companies }
+    });
 
+    dialogRef.afterClosed().subscribe(companyForm => {
+      console.log("Delete company dialog closed");
+      this.deleteCompany(companyForm["company"])
+    });
+  }
+
+  deleteCompany(id) {
+    if (id) {
+      this.companyService.deleteCompany(id).subscribe(
+        success => {
+          console.log("Successfully deleted company with id: ", id);
+          this.refresh();
+        },
+        err => console.log(`Error deleteing company with id: ${id}, cause: ${err}`),
+        () => console.log("Deleting company event finished.")
+      );
+    }
   }
 
   actionComplete(event) {

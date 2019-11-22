@@ -15,7 +15,8 @@
 
             <span class="navbar-text">
                 <form class="form-inline">
-                    <button class="btn btn-outline-light" type="submit" (click)="deleteCompany()">Delete company
+                    <button class="btn btn-outline-light" type="submit" (click)="openDeleteCompanyDialog()">Delete
+                        company
                         ✘</button>
                 </form>
             </span>
@@ -34,13 +35,13 @@
                 [toolbar]="toolbar" (actionBegin)="actionBegin($event)"> -->
                 <e-columns>
 
-                    <e-column type="checkbox" width="50"></e-column>
+                    <e-column type="checkbox" allowEditing="false" width="50"></e-column>
 
                     <!-- <e-column field="id" headerText="Computer ID" width="120" textAlign="Right" isPrimaryKey="true"
                         [validationRules]="customeridrules">
                     </e-column> -->
 
-                    <e-column field="name" headerText="Computer Name" width="120"></e-column>
+                    <e-column field="name" headerText="Computer Name" allowEditing="false" width="120"></e-column>
 
                     <e-column field="introduced" headerText="Introduced date" editType="datepickeredit"
                         [format]="dateFormat" width="120">
